@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti, Mari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --rose: #e91e63;
+      --rose-dark: #c2185b;
+      --rose-light: #fce4ec;
+      --rose-glow: rgba(233, 30, 99, .35);
+      --cream: #fff5f7;
+      --text: #3a2a2e;
+      --text-soft: #6d4c5a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 40%, #f48fb1 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* ============ FONDOS FLOTANTES ============ */
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-heart {
+      position: absolute;
+      color: rgba(233, 30, 99, .08);
+      font-size: 3rem;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(0deg) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg) scale(.5); opacity: 0; }
+    }
+
+    /* ============ CARD ============ */
+    .card {
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 2.5rem 2rem;
+      border-radius: 28px;
+      box-shadow:
+        0 20px 60px rgba(233, 30, 99, .12),
+        0 0 0 1px rgba(233, 30, 99, .06);
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      position: relative;
+      z-index: 1;
+      animation: cardIn .8s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ============ PREGUNTA ============ */
+    .question-view {
+      animation: fadeIn .6s ease forwards;
+    }
+
+    .heart-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 2.2rem;
+      animation: heartbeat 1.4s ease-in-out infinite;
+      box-shadow: 0 4px 20px rgba(233, 30, 99, .15);
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.1); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.08); }
+      56% { transform: scale(1); }
+    }
+
+    .card h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      color: var(--rose);
+      font-size: 1.9rem;
+      margin-bottom: .75rem;
+      line-height: 1.2;
+    }
+
+    .card .subtitle {
+      color: var(--text-soft);
+      font-size: .95rem;
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ============ BOTONES ============ */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      position: relative;
+      min-height: 56px;
+    }
+
+    .btn {
+      padding: .85rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all .25s cubic-bezier(.22, 1, .36, 1);
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .01em;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #e91e63, #c2185b);
+      color: #fff;
+      box-shadow: 0 6px 20px var(--rose-glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-yes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+      border-radius: inherit;
+    }
+    .btn-yes:hover {
+      transform: scale(1.06);
+      box-shadow: 0 8px 28px rgba(233, 30, 99, .45);
+    }
+    .btn-yes:active { transform: scale(.98); }
+
+    .btn-no {
+      background: #f5f0f1;
+      color: #7a5a63;
+      position: absolute;
+      transition: all .3s cubic-bezier(.22, 1, .36, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      user-select: none;
+    }
+    .btn-no:hover {
+      background: #ede7e9;
+    }
+
+    /* ============ CARTA ============ */
+    .letter-view {
+      display: none;
+      text-align: left;
+      animation: letterIn .9s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+    @keyframes letterIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px dashed rgba(233, 30, 99, .15);
+    }
+    .letter-header .mini-heart {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: .5rem;
+      animation: heartbeat 1.4s ease-in-out infinite;
+    }
+    .letter-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--rose);
+      font-size: 1.4rem;
+    }
+
+    .letter-view p {
+      color: var(--text);
+      font-size: .92rem;
+      line-height: 1.75;
+      margin-bottom: 1.1rem;
+    }
+
+    .letter-view .closing {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed rgba(233, 30, 99, .15);
+    }
+    .letter-view .closing p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--rose);
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: .4rem;
+    }
+
+    /* ============ CONFETTI ============ */
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ============ UTILS ============ */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 2rem 1.5rem; border-radius: 22px; }
+      .card h1 { font-size: 1.6rem; }
+      .heart-icon { width: 68px; height: 68px; font-size: 1.8rem; }
+      .btn { padding: .75rem 1.5rem; font-size: .9rem; }
+      .letter-view p { font-size: .88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondos flotantes -->
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <!-- Confetti -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <!-- Card -->
+  <div class="card" id="mainCard">
+
+    <!-- Vista: Pregunta -->
+    <div class="question-view" id="questionView">
+      <div class="heart-icon">
+        <i class="fa-solid fa-heart" style="color:#e91e63;"></i>
+      </div>
+      <h1>¿Podemos hablar un momento?</h1>
+      <p class="subtitle">
+        Sé que las cosas no han estado bien últimamente y me duele mucho estar así contigo.<br>
+        ¿Me perdonas?
+      </p>
+      <div class="buttons" id="buttonsArea">
+        <button class="btn btn-yes" onclick="showLetter()">Sí, te perdono</button>
+        <button class="btn btn-no" id="noBtn" onmouseover="moveNoBtn()" ontouchstart="moveNoBtn()">No</button>
+      </div>
+    </div>
+
+    <!-- Vista: Carta -->
+    <div class="letter-view" id="letterView">
+      <div class="letter-header">
+        <span class="mini-heart"><i class="fa-solid fa-heart" style="color:#e91e63;"></i></span>
+        <h2>Para ti, mi amor</h2>
+      </div>
+
+      <p>
+        Si llegaste hasta aquí es porque decidiste escucharme, y de verdad gracias por hacerlo.
+        Antes que cualquier cosa quiero pedirte perdón. Perdón por los errores que cometí,
+        por los momentos en los que te hice sentir mal y por todo aquello que, sin querer o
+        queriendo, terminó lastimándonos.
+      </p>
+
+      <p>
+        He pensado muchísimo en todo lo que ha pasado estos días. No dejo de darle vueltas a
+        las conversaciones, a nuestras discusiones y a las cosas que pude haber hecho mejor.
+        Me duele saber que la persona que más amo también ha sido la persona a la que más le he llorado, porque aunque no lo creas me importas demasiado como para simplemente dejar las cosas como si nada.
+      </p>
+
+      <p>
+        Tú eres una de las personas más importantes de mi vida, Mari. Eres mi lugar seguro,
+        la persona con la que quiero compartir mis alegrías, mis logros y también los momentos
+        difíciles. No quiero perder todo lo bonito que hemos construido por errores que todavía
+        podemos corregir.
+      </p>
+
+      <p>
+        No quiero prometer un cambio solo con palabras, porque sé que las palabras se las lleva
+        el tiempo. Quiero demostrártelo con hechos, con paciencia, con respeto, aprendiendo de
+        mis errores y esforzándome todos los días por ser una mejor persona y un mejor novio para ti.
+      </p>
+
+      <p>
+        También quiero decirte algo desde el corazón. Una relación no puede sostenerla una sola
+        persona. El amor se construye entre dos personas que deciden elegirse incluso cuando las
+        cosas no son fáciles. Yo estoy dispuesto a hacer mi parte, a escucharte más, a comprenderte
+        mejor y a seguir creciendo contigo. Solo espero que, cuando estés lista, podamos intentarlo
+        juntos y que ambos pongamos de nuestra parte para salir adelante.
+      </p>
+
+      <p>
+        No espero que olvides todo de un momento a otro. Solo quiero que recuerdes que detrás de
+        esta carta hay un hombre que te ama de verdad, que reconoce sus errores y que está luchando
+        por convertirse en alguien que te haga sentir orgullosa y segura.
+      </p>
+
+      <div class="closing">
+        <p>Te amo muchísimo, Mari.</p>
+        <p style="font-size:.95rem; font-weight:400; font-style:normal; color:var(--text-soft);">Ojalá también aceptes que cometes errores y que no puedo hacer esto solo.</p>
+      </div>
+    </div>
+
+  </div>
+
+
+<script>
+  // =============================================
+  // Corazones flotantes de fondo
+  // =============================================
+  function createBgHearts() {
+    var container = document.getElementById('bgHearts');
+    var symbols = ['♥', '♡', '❤', '💕'];
+
+    for (var i = 0; i < 18; i++) {
+      var heart = document.createElement('span');
+      heart.className = 'bg-heart';
+      heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.fontSize = (1.5 + Math.random() * 3) + 'rem';
+      heart.style.animationDuration = (8 + Math.random() * 12) + 's';
+      heart.style.animationDelay = (Math.random() * 10) + 's';
+      container.appendChild(heart);
+    }
+  }
+  createBgHearts();
+
+  // =============================================
+  // Mover botón "No"
+  // =============================================
+  var noBtn = document.getElementById('noBtn');
+  var noMoveCount = 0;
+
+  function moveNoBtn() {
+    noMoveCount++;
+    var card = document.getElementById('mainCard');
+    var cardRect = card.getBoundingClientRect();
+    var btnRect = noBtn.getBoundingClientRect();
+
+    // Rango de movimiento dentro de la tarjeta
+    var rangeX = cardRect.width * 0.8;
+    var rangeY = cardRect.height * 0.45;
+
+    var randomX = (Math.random() - 0.5) * rangeX;
+    var randomY = (Math.random() - 0.5) * rangeY;
+
+    noBtn.style.left = '50%';
+    noBtn.style.top = '50%';
+    noBtn.style.transform = 'translate(calc(-50% + ' + randomX + 'px), calc(-50% + ' + randomY + 'px))';
+
+    // Cambiar texto cada vez que se mueve
+    var texts = [
+      'No', '¡No!', 'Ni lo pienses', '¡Imposible!', '¡Jamás!', '¡Ni loca!', '¡No, no, no!', '¡Ay no!'
+    ];
+    noBtn.textContent = texts[Math.min(noMoveCount, texts.length - 1)];
+  }
+
+  // =============================================
+  // Mostrar carta + confetti
+  // =============================================
+  function showLetter() {
+    document.getElementById('questionView').style.display = 'none';
+    document.getElementById('letterView').style.display = 'block';
+    launchConfetti();
+  }
+
+  // =============================================
+  // Confetti
+  // =============================================
+  function launchConfetti() {
+    var container = document.getElementById('confettiContainer');
+    var colors = ['#e91e63', '#f06292', '#f8bbd0', '#ff80ab', '#ff4081', '#c2185b', '#fce4ec', '#fff'];
+
+    for (var i = 0; i < 80; i++) {
+      var piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (2 + Math.random() * 3) + 's';
+      piece.style.animationDelay = (Math.random() * .8) + 's';
+      container.appendChild(piece);
+    }
+
+    // Limpiar después de un rato
+    setTimeout(function() { container.innerHTML = ''; }, 5000);
+  }
+</script>
+
+</body>
+</html>
